@@ -39,11 +39,13 @@ pipeline {
                 sh 'curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="Need to approve terraform plan!"'
               }
                 script {
-                    def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
+                    def userInput = input(id: 'confirm', message: 'Apply Terraform?', 
+                                          parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, 
+                                                         description: 'Apply terraform', name: 'confirm'] ])
                 }
             }
           post {
-            failure { echo 'approve canceled' }
+            aborted { echo 'approve canceled' }
             success { echo 'approved!!!'}
             
           }
