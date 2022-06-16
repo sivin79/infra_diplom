@@ -15,9 +15,9 @@ pipeline {
     }
         
     
-    stage('CD') {
+    stage('Start terraform') {
         steps {
-            echo '========== starting terraform ==========='            
+            echo '========== Starting terraform ==========='            
             dir("${env.WORKSPACE}/terraform"){
               withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
