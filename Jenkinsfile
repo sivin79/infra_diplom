@@ -42,6 +42,12 @@ pipeline {
                     def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
                 }
             }
+          post {
+            failure { echo 'approve canceled' }
+            success { echo 'approved!!!'}
+            
+          }
+          
         }
         stage ("Terraform infra") {            
             steps {
