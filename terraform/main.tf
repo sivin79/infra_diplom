@@ -77,6 +77,14 @@ resource "aws_security_group" "lb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    protocol    = "tcp"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -110,6 +118,18 @@ resource "aws_lb_listener" "flask_blog" {
     type             = "forward"
   }
 }
+
+resource "aws_lb_listener" "flask_blog-80" {
+  load_balancer_arn = aws_lb.default.id
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = aws_lb_target_group.flask_blog.id
+    type             = "forward"
+  }
+}
+
 
 resource "aws_ecs_task_definition" "flask_blog" {
   family                   = "flask-blog-app"
@@ -180,3 +200,4 @@ resource "aws_ecs_service" "flask_blog" {
 
   depends_on = [aws_lb_listener.flask_blog]
 }
+
